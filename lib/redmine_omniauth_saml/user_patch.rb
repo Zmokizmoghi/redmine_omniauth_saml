@@ -1,3 +1,5 @@
+require_dependency 'project'
+require_dependency 'principal'
 require_dependency 'user'
 
 class User

@@ -16,7 +16,7 @@ module Redmine::OmniAuthSAML
       def login_with_saml
         #TODO: test 'replace_redmine_login' feature
         if saml_settings["enabled"] && saml_settings["replace_redmine_login"]
-          redirect_to :controller => "account", :action => "login_with_saml_redirect", :provider => "saml", :origin => back_url
+          redirect_to :controller => "account", :action => "login_with_saml_redirect", :provider => "saml"
         else
           login_without_saml
         end
