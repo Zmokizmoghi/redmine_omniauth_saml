@@ -2,37 +2,34 @@ require_dependency 'project'
 require_dependency 'principal'
 require_dependency 'user'
 
-class User
-  def self.find_or_create_from_omniauth(omniauth)
-    user = self.find_by_login(saml_attribute(omniauth, :login))
-    unless user
-      if Redmine::OmniAuthSAML.onthefly_creation?
-        auth = {
-          :firstname  => saml_attribute(omniauth, :firstname),
-          :lastname   => saml_attribute(omniauth, :lastname),
-          :mail       => saml_attribute(omniauth, :mail)
-        }
-        user = new(auth)
-        user.login    = saml_attribute(omniauth, :login)
-        user.language = Setting.default_language
-        user.activate
-        user.save!
-        user.reload
+
+module RedmineOmniAuthSaml
+  module Patches
+    module UserPatch
+
+      def self.included(base) # :nodoc:
+        base.class_eval do
+          unloadable
+          has_one :auth, class_name: "UserAuthType", dependent: :destroy
+          accepts_nested_attributes_for :auth, allow_destroy: true
+          safe_attributes 'auth_attributes',
+                          :if => lambda {|user, current_user| current_user.admin?}
+
+          base.send(:include, InstanceMethods)
+        end
+      end
+
+      module InstanceMethods
+
+        def auth_parameters=(record)
+          puts
+
+        end
       end
     end
-    user
   end
+end
 
-  private
-    def self.saml_attribute(hash, symbol)
-      h = HashWithIndifferentAccess.new hash
-      key = RedmineSAML[:attribute_mapping][symbol]
-      throw ArgumentError.new "There is no SAML attribute mapping for #{symbol}" unless key
-      key.split('.')                        # Get an array with nested keys: name.first will return [name, first]
-        .map {|x| [:[], x]}                 # Create pair elements being :[] symbol and the key
-        .inject(h) do |hash, params|     # For each key, apply method :[] with key as parameter
-          hash.send(*params)
-        end
-    end
-
+unless User.included_modules.include?(RedmineOmniAuthSaml::Patches::UserPatch)
+  User.send(:include, RedmineOmniAuthSaml::Patches::UserPatch)
 end

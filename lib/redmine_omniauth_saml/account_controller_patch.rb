@@ -9,10 +9,18 @@ module Redmine::OmniAuthSAML
       base.class_eval do
         unloadable
         alias_method_chain :login, :saml
+        before_filter :onelogin_filter, only: :login
       end
     end
 
     module InstanceMethods
+
+      def onelogin_filter
+        if User.find_by_login(params[:username]).try(:auth).try(:onelogin_auth)
+          flash[:error] = l(:notice_account_invalid_creditentials)
+          redirect_to :controller => "account", :action => "login"
+        end
+      end
 
       def login_with_saml
         if settings["enabled"] && settings["replace_redmine_login"]

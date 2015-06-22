@@ -1,0 +1,4 @@
+<% auth = @user.auth.present? ? @user.auth : @user.build_auth%>
+<%= form.fields_for :auth, auth do |r| %>
+    <p><%= r.check_box :onelogin_auth%></p>
+<% end %>
