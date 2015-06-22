@@ -16,7 +16,7 @@ module Redmine::OmniAuthSAML
       def login_with_saml
         #TODO: test 'replace_redmine_login' feature
         if saml_settings["enabled"] && saml_settings["replace_redmine_login"]
-          redirect_to :controller => "account", :action => "login_with_saml_redirect", :provider => "saml", :origin => back_url
+          redirect_to :controller => "account", :action => "login_with_saml_redirect", :provider => "saml"
         else
           login_without_saml
         end
@@ -29,7 +29,7 @@ module Redmine::OmniAuthSAML
       def login_with_saml_callback
         auth = request.env["omniauth.auth"]
         #user = User.find_by_provider_and_uid(auth["provider"], auth["uid"])
-        user = User.find_or_create_from_omniauth(auth) 
+        user = User.find_or_create_from_omniauth(auth)
 
         # taken from original AccountController
         # maybe it should be splitted in core
