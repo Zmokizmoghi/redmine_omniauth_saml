@@ -22,4 +22,3 @@ Redmine::Plugin.register :redmine_omniauth_saml do
   settings :default => { 'enabled' => 'true', 'label_login_with_saml' => '', 'replace_redmine_login' => false  },
            :partial => 'settings/omniauth_saml_settings'
 end
-

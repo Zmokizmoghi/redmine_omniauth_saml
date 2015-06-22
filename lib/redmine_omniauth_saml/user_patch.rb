@@ -6,13 +6,13 @@ class User
   def self.find_or_create_from_omniauth(omniauth)
     user = self.find_by_login(saml_attribute(omniauth, :login))
     unless user
-      if Redmine::OmniAuthSAML.onthefly_creation? 
+      if Redmine::OmniAuthSAML.onthefly_creation?
         auth = {
           :firstname  => saml_attribute(omniauth, :firstname),
           :lastname   => saml_attribute(omniauth, :lastname),
           :mail       => saml_attribute(omniauth, :mail)
         }
-        user = new(auth) 
+        user = new(auth)
         user.login    = saml_attribute(omniauth, :login)
         user.language = Setting.default_language
         user.activate
