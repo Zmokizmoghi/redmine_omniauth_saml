@@ -2,13 +2,14 @@ h1. Redmine OneLogin SAML plugin
 
 This plugins adds SAMLv2 authentication support for "Redmine":http://www.redmine.org thanks to the "Redmine OmniAuth SAML plugin":https://github.com/chrodriguez/redmine_omniauth_saml.
 
-h2. Install
+You can use it for authentication to Redmine via "Onelogin":https://www.onelogin.com/
+
+h2. Installation
 
 You can first take a look at general instructions for plugins "here":http://www.redmine.org/wiki/redmine/Plugins.
 
 Note that the plugin is now *only compatible with Redmine 2.0.0 or higher*. 
 
-Then :
 * clone this repository in your plugins/ directory ; if you have a doubt you put it at the good level, you can go to your redmine root directoryand check you have a @plugins/redmine_omniauth_saml/init.rb@ file
 * install the dependencies with bundler : @bundle install@
 * copy assets by running this command from your redmine root directory (note: the plugin has no migration for now) : @RAILS_ENV=production rake redmine:plugins@
@@ -17,4 +18,15 @@ Then :
 Finally you *must* configure your SAML settings adding a file in @config/initializers@ for example named @saml.rb@ (the name is not important, but it must be a ruby file). A sample file is given in the plugin root folder named @saml-initializers-example.rb@
 
 Finaly you need to configure some minor options for the plugin to work, in "Administration" > "Plugins" > "Configure" on the OmniAuth SAML plugin line.
+
+h2. OneLogin configuration
+
+You can create just a simple application and set parameters the following parameters to be sent from Onelogin:
+
+- email
+- First name
+- Last name
+- Username
+
+
 
