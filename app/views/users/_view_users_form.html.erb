@@ -1,4 +1,5 @@
-<% auth = @user.auth.present? ? @user.auth : @user.build_auth%>
-<%= form.fields_for :auth, auth do |r| %>
-    <p><%= r.check_box :onelogin_auth%></p>
-<% end %>
+<p>
+  <label for='force_onelogin'> <%= l(:field_onelogin_auth) %> </label>
+  <%= hidden_field_tag 'user[onelogin_auth]', 0 %>
+  <%= check_box_tag 'user[onelogin_auth]', '1' , @user.onelogin_auth %>
+</p>
